@@ -1,0 +1,22 @@
+.pedido-card {
+    border-width: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-header h5 {
+    font-weight: bold;
+}
+
+.card-footer .btn-group .btn {
+    border-radius: 0;
+}
+
+.card-footer .btn-group .btn:first-child {
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
+
+.card-footer .btn-group .btn:last-child {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}

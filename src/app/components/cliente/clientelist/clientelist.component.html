@@ -1,0 +1,65 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Lista de Clientes</h3>
+
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Novo
+            </button>
+          </div>
+        </div>
+        <br />
+        <table class="table table-striped">
+          <thead>
+            <tr class="centralizar">
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Telefone</th>
+              <th>CPF/CNPJ</th>
+              <th>Endereço</th>
+              <th>Data de Cadastro</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (cliente of lista; track $index){
+            <tr>
+              <td>{{ cliente.nome }}</td>
+              <td>{{ cliente.email }}</td>
+              <td>{{ cliente.telefone }}</td>
+              <td>{{ cliente.cpfCnpj }}</td>
+              <td>{{ cliente.endereco }}</td>
+              <td>{{ cliente.dataCadastro | date : "dd/MM/yyyy" }}</td>
+
+              <td class="botoes">
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(cliente)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(cliente)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modalClienteDetalhe>
+  <div class="modal-header px-4 pt-4 pb-2">
+    <h5 class="modal-title fw-bold fs-4" id="exampleModalLabel">Cadastro de Cliente</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body p-4">
+    <app-clientedetails [cliente]="clienteEdit" (retorno)="retornoDetalhes($event)"
+      (cancelar)="modalRef.close()"></app-clientedetails>
+  </div>
+</ng-template>

@@ -1,0 +1,61 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Cadastro de Categorias</h3>
+
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Nova
+            </button>
+          </div>
+        </div>
+        <br />
+        <div class="centralizar">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (categoria of lista; track $index) {
+            <tr>
+              <td>{{ categoria.id }}</td>
+              <td>{{ categoria.nome }}</td>
+              <td>{{ categoria.descricao }}</td>
+  
+                <td>
+                  <div>
+                    <button type="button" class=" btn btn-primary btn-rounded" mdbRipple (click)="editById(categoria)">
+                      Editar
+                    </button>
+                    <button type="button" class=" btn btn-danger btn-rounded" mdbRipple (click)="deleteById(categoria)">
+                      Deletar
+                    </button>
+                  </div>
+                </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modalCategoriaDetalhe>
+  <div class="modal-header px-4 pt-4 pb-2">
+    <h5 class="modal-title fw-bold fs-4" id="exampleModalLabel">Cadastro de Categoria</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body p-4">
+    <app-categoriasdetails [categoria]="categoriaEdit" (retorno)="retornoDetalhes($event)" (cancelar)="modalRef.close()"></app-categoriasdetails>
+  </div>
+</ng-template>

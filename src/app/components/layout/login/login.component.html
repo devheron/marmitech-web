@@ -1,0 +1,63 @@
+<div class="login-wrapper">
+  <section class="login-hero" aria-label="Marmitech">
+    <div class="hero-badge">
+      <i class="fa-solid fa-bowl-rice"></i>
+      Cozinha em movimento
+    </div>
+    <h1>Marmitech</h1>
+    <p>Pedidos, clientes e producao em uma tela com cara de restaurante de verdade.</p>
+    <div class="hero-stats">
+      <span><strong>Fila</strong> ao vivo</span>
+      <span><strong>Cardapio</strong> organizado</span>
+      <span><strong>Equipe</strong> alinhada</span>
+    </div>
+  </section>
+
+  <div class="login-card shadow-5">
+    <div class="text-center mb-4">
+      <div class="login-icon"><i class="fa-solid fa-utensils"></i></div>
+      <h2 class="fw-bold text-primary mb-1">Acesse sua cozinha</h2>
+      <p class="text-muted small">Entre com seu e-mail e senha para continuar</p>
+    </div>
+
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+      <div class="mb-4">
+        <mdb-form-control>
+          <input
+            mdbInput
+            type="email"
+            id="loginEmail"
+            name="email"
+            class="form-control"
+            [(ngModel)]="loginData.email"
+            required
+          />
+          <label mdbLabel class="form-label" for="loginEmail">E-mail</label>
+        </mdb-form-control>
+      </div>
+
+      <div class="mb-4">
+        <mdb-form-control>
+          <input
+            mdbInput
+            type="password"
+            id="loginSenha"
+            name="senha"
+            class="form-control"
+            [(ngModel)]="loginData.senha"
+            required
+          />
+          <label mdbLabel class="form-label" for="loginSenha">Senha</label>
+        </mdb-form-control>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block btn-rounded py-2 shadow-2"
+        [disabled]="!loginForm.valid"
+      >
+        Entrar
+      </button>
+    </form>
+  </div>
+</div>

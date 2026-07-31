@@ -1,0 +1,143 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Histórico de Pedidos</h3>
+
+                    <div class="row g-3 filter-container">
+                        <div class="col-md-3 filter-field">
+                            <label for="filtroData" class="form-label">
+                                <i class="fa-solid fa-calendar-day"></i>
+                                Data do pedido
+                            </label>
+                            <div class="custom-picker">
+                                <button type="button" id="filtroData" class="picker-trigger" (click)="alternarSeletorData()">
+                                    <span>
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        {{ dataSelecionadaLabel }}
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                @if (seletorDataAberto) {
+                                <div class="picker-panel calendar-panel">
+                                    <div class="calendar-header">
+                                        <button type="button" class="icon-button" (click)="mudarMesCalendario(-1)">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+                                        <strong>{{ mesAtualLabel }}</strong>
+                                        <button type="button" class="icon-button" (click)="mudarMesCalendario(1)">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="calendar-weekdays">
+                                        <span>Dom</span>
+                                        <span>Seg</span>
+                                        <span>Ter</span>
+                                        <span>Qua</span>
+                                        <span>Qui</span>
+                                        <span>Sex</span>
+                                        <span>Sab</span>
+                                    </div>
+
+                                    <div class="calendar-grid">
+                                        @for (dia of diasCalendario; track $index) {
+                                        <button
+                                            type="button"
+                                            class="calendar-day"
+                                            [class.calendar-day-empty]="!dia"
+                                            [class.calendar-day-selected]="diaEstaSelecionado(dia)"
+                                            [disabled]="!dia"
+                                            (click)="selecionarDia(dia)"
+                                        >
+                                            {{ dia || '' }}
+                                        </button>
+                                        }
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-3 filter-field">
+                            <label for="filtroStatus" class="form-label">
+                                <i class="fa-solid fa-kitchen-set"></i>
+                                Status
+                            </label>
+                            <div class="custom-picker">
+                                <button type="button" id="filtroStatus" class="picker-trigger" (click)="alternarSeletorStatus()">
+                                    <span>
+                                        {{ statusSelecionado.label }}
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </button>
+
+                                @if (seletorStatusAberto) {
+                                <div class="picker-panel status-panel">
+                                    @for (status of statusOptions; track status.value) {
+                                    <button
+                                        type="button"
+                                        class="status-option"
+                                        [class.status-option-active]="filtroStatus === status.value"
+                                        (click)="selecionarStatus(status.value)"
+                                    >
+                                        <span>{{ status.label }}</span>
+                                    </button>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6 acoes">
+                            <button class="btn btn-primary" (click)="buscar()">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Buscar
+                            </button>
+                            <button class="btn btn-secondary" (click)="limparFiltros()">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID do Pedido</th>
+                            <th>Nome do Cliente</th>
+                            <th>Status</th>
+                            <th>Valor Total</th>
+                            <th>Data Do Pedido</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (pedido of pedidos; track pedido.id) {
+                        <tr routerLink="/admin/historicos/{{pedido.id}}">
+                            <td>{{ pedido.id }}</td>
+                            <td>{{ pedido.nomeCliente }}</td>
+                            <td>
+                                <span class="status" [ngClass]="{
+                                    'bg-secondary': pedido.status === 'FILA',
+                                    'bg-info': pedido.status === 'PREPARANDO',
+                                    'bg-success': pedido.status === 'FINALIZADO' || pedido.status === 'ENTREGUE',
+                                    'bg-danger': pedido.status === 'CANCELADO'
+                                    }">
+                                    {{ pedido.status }}
+                                </span>
+                            </td>
+                            <td>{{ pedido.valorTotal | currency:'BRL' }}</td>
+                            <td>{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="5" class="pedido-vazio">Nenhum pedido encontrado.</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

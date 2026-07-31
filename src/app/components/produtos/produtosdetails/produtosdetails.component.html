@@ -1,0 +1,57 @@
+<form #produtoForm="ngForm">
+  <div class="row g-3">
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="produto.nome" required />
+        <label mdbLabel class="form-label" for="nome">Nome</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="sku" name="sku" class="form-control" [(ngModel)]="produto.sku" required />
+        <label mdbLabel class="form-label" for="sku">SKU</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label text-muted small ms-1 mb-1" for="categoria">Categoria</label>
+      <select id="categoria" name="categoria" class="form-select" [(ngModel)]="categoriaId" required>
+        <option [ngValue]="null" disabled selected>Selecione a Categoria</option>
+        @for (cat of categorias; track cat.id) {
+          <option [ngValue]="cat.id">{{ cat.nome }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="number" id="precoUnitario" name="precoUnitario" class="form-control" [(ngModel)]="produto.precoUnitario" required min="0" />
+        <label mdbLabel class="form-label" for="precoUnitario">Preço Unitário</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="number" id="estoque" name="estoque" class="form-control" [(ngModel)]="produto.estoque" required min="0" />
+        <label mdbLabel class="form-label" for="estoque">Estoque</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="descricao" name="descricao" class="form-control" [(ngModel)]="produto.descricao" required />
+        <label mdbLabel class="form-label" for="descricao">Descrição</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12 text-end mt-4 d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary btn-rounded px-4" mdbRipple (click)="cancelar.emit()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary btn-rounded px-4" mdbRipple (click)="salvar()" [disabled]="!produtoForm.valid">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

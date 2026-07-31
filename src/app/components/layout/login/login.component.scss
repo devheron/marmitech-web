@@ -1,0 +1,107 @@
+.login-wrapper {
+  display: grid;
+  grid-template-columns: minmax(280px, 540px) minmax(320px, 400px);
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: clamp(24px, 6vw, 88px);
+  padding: clamp(22px, 5vw, 64px);
+  background:
+    linear-gradient(rgba(43, 32, 25, 0.72), rgba(43, 32, 25, 0.6)),
+    url("https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1600&q=80") center/cover;
+}
+
+.login-hero {
+  color: #fff8ed;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 248, 237, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 248, 237, 0.1);
+  font-weight: 800;
+}
+
+.login-hero h1 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: clamp(3rem, 8vw, 6.4rem);
+  font-weight: 900;
+  line-height: 0.92;
+}
+
+.login-hero p {
+  max-width: 520px;
+  margin: 0;
+  color: rgba(255, 248, 237, 0.84);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.hero-stats span {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: rgba(255, 248, 237, 0.12);
+  color: rgba(255, 248, 237, 0.82);
+}
+
+.hero-stats strong {
+  color: #f6a21a;
+}
+
+.login-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 248, 237, 0.45);
+  border-radius: 8px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+}
+
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  background: linear-gradient(90deg, #cf3f22, #f6a21a, #2f7d52);
+}
+
+.login-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+  place-items: center;
+  border-radius: 8px;
+  background: #fff1d8;
+  color: #cf3f22;
+  font-size: 1.35rem;
+}
+
+button[type="submit"] {
+  width: 100%;
+  min-height: 46px;
+}
+
+@media (max-width: 860px) {
+  .login-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .login-card {
+    max-width: none;
+  }
+}

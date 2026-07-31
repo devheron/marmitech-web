@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header ">
+            <h3>Detalhes do Pedido</h3>
+            <a routerLink="/admin/historicos" class="btn btn-primary">Voltar</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="detalhes">
+                        <label class="form-label">ID do Pedido:</label>
+                        <p class="form-control-plaintext">{{ pedido.id }}</p>
+                    </div>
+                    <div class="detalhes">
+                        <label class="form-label">Status:</label>
+                        <p class="form-control-plaintext">{{ pedido.status }}</p>
+                    </div>
+                    <div class="detalhes">
+                        <label class="form-label">Data do Pedido:</label>
+                        <p class="form-control-plaintext">{{ pedido.dataPedido | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                    <div class="detalhes">
+                        <label class="form-label">Cliente:</label>
+                        <p class="form-control-plaintext">{{ pedido.nomeCliente }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detalhes">
+                        <label class="form-label">Itens do Pedido:</label>
+                        <ul class="esquerda">
+                            @for(item of pedido.pedidoItems; track item.produtoNome){
+                            <li class="list-group-item">{{ item.quantidade }}x {{ item.produtoNome }}</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="total">
+                        <h5>Valor Total</h5>
+                        <p class="form-control-plaintext">{{ pedido.valorTotal | currency:'BRL' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<form #categoriaForm="ngForm">
+  <div class="row g-3">
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="categoria.nome" required />
+        <label mdbLabel class="form-label" for="nome">Nome</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="descricao" name="descricao" class="form-control" [(ngModel)]="categoria.descricao" required />
+        <label mdbLabel class="form-label" for="descricao">Descrição</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12 text-end mt-4 d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary btn-rounded px-4" mdbRipple (click)="cancelar.emit()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary btn-rounded px-4" mdbRipple (click)="salvar()" [disabled]="!categoriaForm.valid">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

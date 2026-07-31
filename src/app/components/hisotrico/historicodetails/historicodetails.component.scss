@@ -1,0 +1,29 @@
+.container {
+    margin-top: 3vh;
+}
+
+.card-body {
+    display: flex;
+}
+
+.historico-info,
+.historico-pedido {
+    flex: 1;
+}
+
+.detalhes .form-label {
+    font-weight: bold;
+}
+
+.detalhes .esquerda {
+    padding-left: 0.1vh;
+}
+
+.total,
+.detalhes {
+    margin-bottom: 1vh;
+}
+
+.total {
+    color: #6c757d;
+}

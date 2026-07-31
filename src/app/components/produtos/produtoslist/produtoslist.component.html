@@ -1,0 +1,65 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Produtos</h3>
+
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Novo
+            </button>
+
+          </div>
+        </div>
+        <br />
+        <table class="table table-striped">
+          <thead>
+            <tr class="centralizar">
+              <th>SKU</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Estoque</th>
+              <th>Data Cadastro</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (produto of lista; track $index) {
+            <tr>
+              <td>{{ produto.sku }}</td>
+              <td>{{ produto.nome }}</td>
+              <td>{{ produto.descricao }}</td>
+              <td>{{ produto.categoria }}</td>
+              <td>{{ produto.precoUnitario }}</td>
+              <td>{{ produto.estoque }}</td>
+              <td>{{ produto.dataCadastro }}</td>
+              <td class="botoes">
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(produto)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(produto)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalProdutoDetalhe>
+  <div class="modal-header px-4 pt-4 pb-2">
+    <h5 class="modal-title fw-bold fs-4" id="exampleModalLabel">Cadastro de Produto</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body p-4">
+    <app-produtosdetails [produto]="produtoEdit" (retorno)="retornoDetalhe($event)" (cancelar)="modalRef.close()"></app-produtosdetails>
+  </div>
+</ng-template>

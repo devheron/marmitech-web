@@ -1,0 +1,48 @@
+<br />
+<div class="container">
+  <div class="row">
+    
+<div class="col-lg-12 centralizar topo">
+      <div class="card">
+        <form #pedidoItemForm="ngForm">
+        <div class="card-body">
+            <select class="form-select" id="pedidoSelect" name="pedido" [(ngModel)]="pedidoItem.pedidoId">
+              <option [value]="0" disabled>Selecione um pedido</option>
+              @for(pedido of pedidos; track pedido.id){
+                <option [ngValue]="pedido.id">{{ pedido.nomeCliente }}</option>
+              }
+            </select>
+        <br />
+            <select class="form-select" id="produtoSelect" name="produto" [(ngModel)]="pedidoItem.produtoId">
+              <option [value]="0" disabled>Selecione um produto</option>
+              @for(produto of produtos; track produto.id){
+                <option [ngValue]="produto.id">{{ produto.nome }}</option>
+              }
+            </select>
+        <br />
+            <mdb-form-control>
+                <input mdbInput type="number" id="quantidade" name="quantidade" class="form-control" [(ngModel)]="pedidoItem.quantidade" (ngModelChange)="novoSubtotal()" required min="0"/>
+                <label mdbLabel class="form-label" for="quantidade">Quantidade</label>
+            </mdb-form-control>
+        <br />
+            <mdb-form-control>
+                <input mdbInput type="number" id="precoUnitario" name="precoUnitario" class="form-control" [(ngModel)]="pedidoItem.precoUnitarioPedido" (ngModelChange)="novoSubtotal()" required min="0"/>
+                <label mdbLabel class="form-label" for="precoUnitario">Preço Unitário</label>
+            </mdb-form-control>
+        <br />
+            <mdb-form-control>
+                <input mdbInput type="number" id="subtotal" class="form-control" name="subtotal" [(ngModel)]="pedidoItem.subtotal" [readonly]="true"/>
+                <label mdbLabel class="form-label" for="subtotal">Subtotal</label>
+            </mdb-form-control>
+        <br />
+          <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="salvar()" [disabled]="!pedidoItemForm.valid">
+            Salvar 
+        </button>
+        </div>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<br />

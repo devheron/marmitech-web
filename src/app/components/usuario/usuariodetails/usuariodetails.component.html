@@ -1,0 +1,43 @@
+<form #usuarioForm="ngForm">
+  <div class="row g-3">
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="usuario.nome" required />
+        <label mdbLabel class="form-label" for="nome">Nome Completo</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="email" id="email" name="email" class="form-control" [(ngModel)]="usuario.email" required />
+        <label mdbLabel class="form-label" for="email">E-mail Corporativo</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="password" id="senha" name="senha" class="form-control" [(ngModel)]="usuario.senha" required />
+        <label mdbLabel class="form-label" for="senha">Senha de Acesso</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <label class="form-label text-muted small ms-1 mb-1" for="cargo">Cargo</label>
+      <select id="cargo" name="cargo" class="form-select" [(ngModel)]="usuario.cargo" required>
+        <option value="" disabled selected>Selecione o Cargo</option>
+        <option value="ADMIN">ADMIN</option>
+        <option value="CAIXA">CAIXA</option>
+        <option value="COZINHA">COZINHA</option>
+      </select>
+    </div>
+
+    <div class="col-12 text-end mt-4 d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary btn-rounded px-4" mdbRipple (click)="cancelar.emit()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary btn-rounded px-4" mdbRipple (click)="salvar()" [disabled]="!usuarioForm.valid">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

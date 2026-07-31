@@ -1,0 +1,65 @@
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h3>Cadastro de usuários</h3>
+
+          <div class="direita">
+            <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="new()">
+              Novo
+            </button>
+
+          </div>
+        </div>
+        <br />
+        <table class="table table-striped">
+          <thead>
+            <tr class="centralizar">
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Cargo</th>
+              <th>Data de criação</th>
+              <th>Ações</th>
+
+            </tr>
+          </thead>
+    
+          <tbody>
+            @for (usuario of lista; track $index) {
+            <tr>
+              <td>{{usuario.nome}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.cargo}}</td>
+              <td>{{usuario.dataCriacao | date: 'dd/MM/yyyy'}}</td>
+
+              <td class="btntable">
+                <button type="button" class="btn btn-primary btn-rounded" mdbRipple (click)="editById(usuario)">
+                  Editar
+                </button>
+                <button type="button" class="btn btn-danger btn-rounded" mdbRipple (click)="deleteById(usuario)">
+                  Deletar
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <br />
+
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<ng-template #modalUsuariosDetalhe>
+  <div class="modal-header px-4 pt-4 pb-2">
+    <h5 class="modal-title fw-bold fs-4" id="exampleModalLabel">Cadastro de Usuário</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body p-4">
+    <app-usuariodetails [usuario]="usuarioEdit" (retorno)="retornoDetalhes($event)" (cancelar)="modalRef.close()"></app-usuariodetails>
+  </div>
+</ng-template>

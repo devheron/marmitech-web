@@ -1,0 +1,7 @@
+export enum StatusPedidoEnum {
+    FILA = 'FILA',
+    PREPARANDO = 'PREPARANDO',
+    FINALIZADO = 'FINALIZADO',
+    ENTREGUE = 'ENTREGUE',
+    CANCELADO = 'CANCELADO'
+}

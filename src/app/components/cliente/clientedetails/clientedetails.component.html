@@ -1,0 +1,47 @@
+<form #clienteForm="ngForm">
+  <div class="row g-3">
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="nome" name="nome" class="form-control" [(ngModel)]="cliente.nome" required />
+        <label mdbLabel class="form-label" for="nome">Nome</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="cpfCnpj" name="cpfCnpj" class="form-control" [(ngModel)]="cliente.cpfCnpj" required />
+        <label mdbLabel class="form-label" for="cpfCnpj">CPF/CNPJ</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="email" id="email" name="email" class="form-control" [(ngModel)]="cliente.email" />
+        <label mdbLabel class="form-label" for="email">E-mail</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="telefone" name="telefone" class="form-control" [(ngModel)]="cliente.telefone" required />
+        <label mdbLabel class="form-label" for="telefone">Telefone</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12">
+      <mdb-form-control>
+        <input mdbInput type="text" id="endereco" name="endereco" class="form-control" [(ngModel)]="cliente.endereco" />
+        <label mdbLabel class="form-label" for="endereco">Endereço</label>
+      </mdb-form-control>
+    </div>
+
+    <div class="col-12 text-end mt-4 d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-secondary btn-rounded px-4" mdbRipple (click)="cancelar.emit()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary btn-rounded px-4" mdbRipple (click)="salvar()" [disabled]="!clienteForm.form.valid">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg marmitech-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/admin/pedidos/fila">
+      <span class="brand-copy">
+        <strong>Marmitech</strong>
+        <small>gestao de pedidos</small>
+      </span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        @if (isAdmin) {
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/admin/produtos">
+            <i class="fa-solid fa-box-open"></i>
+            Produtos
+          </a>
+        </li>
+        }
+
+        @if (isAdmin || isCaixa) {
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/admin/cliente">
+            <i class="fa-solid fa-user-group"></i>
+            Clientes
+          </a>
+        </li>
+        }
+
+        @if (isAdmin) {
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/admin/categorias">
+            <i class="fa-solid fa-tags"></i>
+            Categorias
+          </a>
+        </li>
+        }
+
+        @if (isAdmin) {
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/admin/usuarios">
+            <i class="fa-solid fa-id-badge"></i>
+            Usuarios
+          </a>
+        </li>
+        }
+
+        <li mdbDropdown class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" id="navbarDropdownMenuLink" role="button" mdbDropdownToggle
+            aria-expanded="false">
+            <i class="fa-solid fa-receipt"></i>
+            Pedidos
+          </a>
+          <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+            @if (isAdmin || isCaixa) {
+            <li>
+              <a class="dropdown-item" routerLink="/admin/pedidos">Novo Pedido</a>
+            </li>
+            }
+
+            @if(isAdmin || isCaixa || isCozinha){
+            <li>
+              <a class="dropdown-item" routerLink="/admin/pedidos/fila">Fila de Pedidos</a>
+            </li>
+            }
+
+            @if(isAdmin || isCaixa){
+            <li>
+              <a class="dropdown-item" routerLink="/admin/pedidos/pedidosItem">Pedidos por Itens</a>
+            </li>
+            }
+            @if(isAdmin || isCozinha || isCaixa ){
+            <li>
+              <a class="dropdown-item" routerLink="/admin/historicos">Histórico de Pedidos</a>
+            </li>
+            }
+          </ul>
+        </li>
+
+      </ul>
+
+      <ul class="navbar-nav flex-row">
+        <li class="nav-item me-4 me-lg-1">
+          <a class="nav-link active logout-link" href="#" (click)="logout(); $event.preventDefault()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Sair
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

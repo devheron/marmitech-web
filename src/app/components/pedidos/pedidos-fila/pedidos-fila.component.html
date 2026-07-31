@@ -1,0 +1,56 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        @for(pedido of pedidos; track pedido.id) {
+        <div class="col-md-4 mb-4">
+            <div class="card pedido-card" [ngClass]="{
+          'border-secondary': pedido.status === 'FILA',
+          'border-info': pedido.status === 'PREPARANDO',
+          'border-success': pedido.status === 'FINALIZADO',
+          'border-danger': pedido.status === 'CANCELADO'
+        }">
+                <div class="card-header d-flex justify-content-between align-items-center" [ngClass]="{
+            'bg-secondary text-white': pedido.status === 'FILA',
+            'bg-info text-white': pedido.status === 'PREPARANDO',
+            'bg-success text-white': pedido.status === 'FINALIZADO',
+            'bg-danger text-white': pedido.status === 'CANCELADO'
+          }">
+                    <h5 class="mb-0">Senha: #{{ pedido.id }}</h5>
+                    <span class="badge" [ngClass]="{
+              'bg-light text-dark': pedido.status === 'FILA' || pedido.status === 'PREPARANDO' || pedido.status === 'FINALIZADO',
+              'bg-light text-danger': pedido.status === 'CANCELADO'
+            }">{{ pedido.status }}</span>
+                </div>
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">Cliente: {{ pedido.nomeCliente }}</h6>
+                    <ul class="list-group list-group-flush">
+                        @for(item of pedido.pedidoItems; track item.id) {
+                        <li class="list-group-item">{{ item.quantidade }}x {{ item.produtoNome }}</li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-footer text-center">
+                    @if (pedido.status !== 'CANCELADO') {
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-info"
+                            (click)="atualizarStatus(pedido, 'PREPARANDO')"
+                            [class.active]="pedido.status === 'PREPARANDO'">Preparando</button>
+                        <button type="button" class="btn btn-outline-success"
+                            (click)="atualizarStatus(pedido, 'FINALIZADO')"
+                            [class.active]="pedido.status === 'FINALIZADO'">Finalizado</button>
+                        <button type="button" class="btn btn-outline-primary"
+                            (click)="atualizarStatus(pedido, 'ENTREGUE')"
+                            [class.active]="pedido.status === 'ENTREGUE'">Entregue</button>
+                    </div>
+                    } @else {
+                    <p class="text-danger">Este pedido foi cancelado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+        } @empty {
+        <div class="col-12">
+            <p class="text-center text-muted">Nenhum pedido na fila.</p>
+        </div>
+        }
+    </div>
+</div>
