@@ -1,0 +1,69 @@
+<div class="meus-pedidos">
+
+  <div class="cabecalho">
+    <h2>Meus Pedidos</h2>
+    <p>Ola, {{ nomeUsuario }}. Acompanhe abaixo a situacao dos seus pedidos.</p>
+    <button class="btn-atualizar" (click)="carregar()">Atualizar</button>
+  </div>
+
+  @if (carregando) {
+    <p class="aviso">Carregando seus pedidos...</p>
+  }
+
+  @if (!carregando && erro) {
+    <p class="aviso erro">{{ erro }}</p>
+  }
+
+  @if (!carregando && !erro && pedidos.length === 0) {
+    <p class="aviso">Voce ainda nao possui pedidos registrados.</p>
+  }
+
+  @if (!carregando && !erro && emAndamento.length > 0) {
+    <h3>Em andamento</h3>
+    <div class="grade">
+      @for (pedido of emAndamento; track pedido.id) {
+        <div class="cartao">
+          <div class="cartao-topo">
+            <span class="senha">Pedido #{{ pedido.id }}</span>
+            <span class="badge" [ngClass]="classeStatus(pedido.status)">{{ pedido.status }}</span>
+          </div>
+          <div class="cartao-corpo">
+            <p class="data">{{ pedido.dataPedido }}</p>
+            @for (item of pedido.pedidoItems || []; track item.id) {
+              <p class="item">{{ item.quantidade }}x {{ item.produtoNome }}</p>
+            }
+          </div>
+          <div class="cartao-rodape">
+            <span>Total</span>
+            <strong>R$ {{ pedido.valorTotal | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (!carregando && !erro && concluidos.length > 0) {
+    <h3>Historico</h3>
+    <div class="grade">
+      @for (pedido of concluidos; track pedido.id) {
+        <div class="cartao concluido">
+          <div class="cartao-topo">
+            <span class="senha">Pedido #{{ pedido.id }}</span>
+            <span class="badge" [ngClass]="classeStatus(pedido.status)">{{ pedido.status }}</span>
+          </div>
+          <div class="cartao-corpo">
+            <p class="data">{{ pedido.dataPedido }}</p>
+            @for (item of pedido.pedidoItems || []; track item.id) {
+              <p class="item">{{ item.quantidade }}x {{ item.produtoNome }}</p>
+            }
+          </div>
+          <div class="cartao-rodape">
+            <span>Total</span>
+            <strong>R$ {{ pedido.valorTotal | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

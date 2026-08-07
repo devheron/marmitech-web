@@ -19,6 +19,10 @@ export class PedidoService {
     return this.http.get<Pedido[]>(this.API);
   }
 
+  meusPedidos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.API}/meus`);
+  }
+
   findById(id: number): Observable<Pedido> {
     return this.http.get<Pedido>(`${this.API}/findById/${id}`);
   }
