@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:8080'
+  apiUrl: 'https://marmitech-api-771382585695.southamerica-east1.run.app'
 };
