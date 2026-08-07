@@ -15,22 +15,33 @@ import { KeycloakService } from '../../../auth/login.service';
 export class MenuComponent {
 
   loginService = inject(KeycloakService);
+  router = inject(Router);
 
-  get isAdmin() {
+  get isAdmin(): boolean {
     return this.loginService.hasRole('ADMIN');
   }
 
-  get isCaixa() {
-    return this.loginService.hasRole('CAIXA');
+  get isFuncionario(): boolean {
+    return this.loginService.hasRole('FUNCIONARIO');
   }
 
-  get isCozinha() {
-    return this.loginService.hasRole('COZINHA');
+  get isCliente(): boolean {
+    return this.loginService.hasRole('CLIENTE');
   }
 
-  router = inject(Router);
+  get isInterno(): boolean {
+    return this.isAdmin || this.isFuncionario;
+  }
 
-  logout() {
+  get nomeUsuario(): string {
+    return localStorage.getItem('nome') || '';
+  }
+
+  get rotaInicial(): string {
+    return this.isCliente ? '/meus-pedidos' : '/admin/pedidos/fila';
+  }
+
+  logout(): void {
     this.loginService.logout();
     this.router.navigate(['/login']);
   }

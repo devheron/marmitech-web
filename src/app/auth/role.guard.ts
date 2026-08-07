@@ -3,11 +3,11 @@ import { CanActivateFn, Router } from '@angular/router';
 import { KeycloakService } from './login.service';
 
 export const roleGuard: CanActivateFn = (route, state) => {
-  const keycloakService = inject(KeycloakService);
+  const loginService = inject(KeycloakService);
   const router = inject(Router);
 
-  if (!keycloakService.isAuthenticated()) {
-    keycloakService.logout();
+  if (!loginService.isAuthenticated()) {
+    loginService.logout();
     router.navigate(['/login']);
     return false;
   }
@@ -18,13 +18,16 @@ export const roleGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  const temPermissao = rolesExigidas.some(role => keycloakService.hasRole(role));
+  const cargo = loginService.getUserCargo();
+  const temPermissao = rolesExigidas.some(r => r.toUpperCase() === cargo);
+
+  console.log('[guard]', state.url, '| cargo:', cargo, '| exigidas:', rolesExigidas, '| permitido:', temPermissao);
 
   if (temPermissao) {
     return true;
-  } else {
-    console.warn('Acesso Negado: Você não tem as roles necessárias:', rolesExigidas);
-    alert('Acesso Negado! Você não tem permissão para acessar esta tela.');
-    return false;
   }
+
+  // nao redireciona para outra rota guardada: evita laco infinito
+  router.navigate(['/login']);
+  return false;
 };

@@ -33,6 +33,7 @@ export class LoginComponent {
         localStorage.setItem('token', res.token);
         localStorage.setItem('cargo', res.cargo);
         localStorage.setItem('nome', res.nome);
+
         Swal.fire({
           title: 'Bem-vindo!',
           text: 'Login realizado com sucesso.',
@@ -40,7 +41,10 @@ export class LoginComponent {
           timer: 1500,
           showConfirmButton: false
         });
-        this.router.navigate(['/admin/pedidos/fila']);
+
+        const cargo = (res.cargo || '').toUpperCase();
+        const destino = cargo === 'CLIENTE' ? '/meus-pedidos' : '/admin/pedidos/fila';
+        this.router.navigate([destino]);
       },
       error: (err) => {
         Swal.fire('Erro no login', 'E-mail ou senha incorretos.', 'error');

@@ -22,24 +22,41 @@ import { ClientedetailsComponent } from './components/cliente/clientedetails/cli
 
 import { UsuariolistComponent } from './components/usuario/usuariolist/usuariolist.component';
 import { UsuariodetailsComponent } from './components/usuario/usuariodetails/usuariodetails.component';
-import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component'; // Importe o novo componente
-import { roleGuard } from './auth/role.guard';
 
+import { PedidosFilaComponent } from './components/pedidos/pedidos-fila/pedidos-fila.component';
+import { MeusPedidosComponent } from './components/pedidos/meus-pedidos/meus-pedidos.component';
+
+import { roleGuard } from './auth/role.guard';
 import { LoginComponent } from './components/layout/login/login.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
+
+    // AREA DO CLIENTE
+    {
+        path: 'meus-pedidos',
+        component: PrincipalComponent,
+        children: [
+            {
+                path: '',
+                component: MeusPedidosComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['CLIENTE', 'ADMIN'] }
+            }
+        ]
+    },
+
+    // AREA INTERNA
     {
         path: 'admin',
         component: PrincipalComponent,
         children: [
-            // PRODUTOS (Só ADMIN)
             {
                 path: 'produtos',
                 component: ProdutoslistComponent,
                 canActivate: [roleGuard],
-                data: { roles: ['ADMIN'] }
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
             },
             {
                 path: 'produtos/new',
@@ -47,62 +64,50 @@ export const routes: Routes = [
                 canActivate: [roleGuard],
                 data: { roles: ['ADMIN'] }
             },
-
-            // PEDIDOS (ADMIN e CAIXA)
-            {
-                path: 'pedidos',
-                component: PedidoslistComponent,
-                canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA'] }
-            },
-
-            // FILA (ADMIN, CAIXA e COZINHA)
-            {
-                path: 'pedidos/fila',
-                component: PedidosFilaComponent,
-                canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
-            },
-
-            {
-                path: 'pedidos/pedidosItem',
-                component: PedidosItemlistComponent,
-                canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA'] }
-            },
-
-            // HISTÓRICOS (ADMIN, CAIXA e COZINHA)
-            {
-                path: 'historicos',
-                component: HistoricolistComponent,
-                canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
-            },
-
-            // CLIENTES
-            {
-                path: 'cliente',
-                component: ClientelistComponent,
-                canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA'] }
-            },
-
-            // CATEGORIAS (Só ADMIN)
             {
                 path: 'categorias',
                 component: CategoriaslistComponent,
                 canActivate: [roleGuard],
-                data: { roles: ['ADMIN'] }
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
             },
-
-            // USUÁRIOS (ADMIN e CAIXA - conforme seu pedido)
+            {
+                path: 'cliente',
+                component: ClientelistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+            },
+            {
+                path: 'pedidos',
+                component: PedidoslistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+            },
+            {
+                path: 'pedidos/fila',
+                component: PedidosFilaComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+            },
+            {
+                path: 'pedidos/pedidosItem',
+                component: PedidosItemlistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+            },
+            {
+                path: 'historicos',
+                component: HistoricolistComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['ADMIN', 'FUNCIONARIO'] }
+            },
             {
                 path: 'usuarios',
                 component: UsuariolistComponent,
                 canActivate: [roleGuard],
-                data: { roles: ['ADMIN', 'CAIXA'] }
-            },
-
+                data: { roles: ['ADMIN'] }
+            }
         ]
-    }
+    },
+
+    { path: '**', redirectTo: 'login' }
 ];
