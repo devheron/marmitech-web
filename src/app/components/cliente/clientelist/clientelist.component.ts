@@ -38,6 +38,10 @@ export class ClientelistComponent {
     this.findAll();
   }
 
+  get podeEditar() {
+    return (localStorage.getItem('cargo') || '').toUpperCase() === 'ADMIN';
+  }
+
   findAll() {
     this.clienteService.findAll().subscribe({
       next: (lista: Cliente[]) => {
