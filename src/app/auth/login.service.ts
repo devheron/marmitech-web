@@ -20,32 +20,36 @@ export class KeycloakService {
 
   login(): void {}
 
-  logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
-
-  getUserRoles(): string[] {
-    return ['ADMIN'];
-  }
-
-  hasRole(role: string): boolean {
-    return true;
-  }
-
   getUsername(): string | undefined {
     return localStorage.getItem('user') || 'usuario_local';
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('cargo');
+    localStorage.removeItem('nome');
+  }
+
+  getUserRoles(): string[] {
+    const cargo = localStorage.getItem('cargo');
+    return cargo ? [cargo.toUpperCase()] : [];
+  }
+
+  hasRole(role: string): boolean {
+    const cargo = localStorage.getItem('cargo');
+    return !!cargo && cargo.toUpperCase() === role.toUpperCase();
+  }
+
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token') || !!localStorage.getItem('user');
+    return !!localStorage.getItem('token');
   }
 
   getUserCargo(): string {
-    return 'ADMIN';
+    return (localStorage.getItem('cargo') || '').toUpperCase();
   }
 
   getUsuarioCargo(): string {
-    return 'ADMIN';
+    return this.getUserCargo();
   }
 }

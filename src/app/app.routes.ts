@@ -60,7 +60,7 @@ export const routes: Routes = [
             {
                 path: 'pedidos/fila',
                 component: PedidosFilaComponent,
-                // canActivate: [roleGuard],
+                canActivate: [roleGuard],
                 data: { roles: ['ADMIN', 'CAIXA', 'COZINHA'] }
             },
 
