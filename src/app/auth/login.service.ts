@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import Swal from 'sweetalert2';
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -99,5 +100,23 @@ export class KeycloakService {
 
   getUsuarioCargo(): string {
     return this.getUserCargo();
+  }
+
+  isFuncionario(): boolean {
+    return this.hasRole('FUNCIONARIO');
+  }
+
+  validarPermissaoEscrita(): boolean {
+    if (this.isFuncionario()) {
+      Swal.fire({
+        title: 'Acesso Restrito',
+        text: 'Usuários com perfil de Funcionário não têm permissão para cadastrar ou editar dados no sistema.',
+        icon: 'warning',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#3085d6'
+      });
+      return false;
+    }
+    return true;
   }
 }
