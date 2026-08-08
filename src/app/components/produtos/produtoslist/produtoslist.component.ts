@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import {MdbModalModule, MdbModalRef, MdbModalService} from 'mdb-angular-ui-kit/modal';
 import { ProdutosdetailsComponent } from "../produtosdetails/produtosdetails.component";
 import { ProdutoService } from '../../../services/produto.service';
+import { KeycloakService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-produtoslist',
@@ -29,6 +30,7 @@ export class ProdutoslistComponent {
   modalRef!: MdbModalRef<any>;
 
   produtoService = inject(ProdutoService);
+  loginService = inject(KeycloakService);
 
   constructor() {
     this.findAll();
@@ -50,6 +52,8 @@ export class ProdutoslistComponent {
   }
 
   editById(produto: Produto) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.produtoEdit = Object.assign({}, produto);
     this.modalRef = this.modalService.open(this.modalProdutoDetalhe, {
       modalClass: 'modal-lg modal-dialog-centered'
@@ -57,6 +61,8 @@ export class ProdutoslistComponent {
   }
 
   new() {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.produtoEdit = new Produto(
       { id: 0, 
         nome: '', 
@@ -79,6 +85,8 @@ export class ProdutoslistComponent {
 
 
   deleteById(produto: Produto) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     Swal.fire({
       title: 'Confirma a exclusão do produto ' + produto.nome + '?',
       icon: 'warning',

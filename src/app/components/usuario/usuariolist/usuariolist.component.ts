@@ -4,9 +4,9 @@ import { RouterLink } from '@angular/router';
 import { UsuariosService } from '../../../services/usuario.service';
 import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
-//import { MdbModalModule } from 'mdb-angular-ui-kit/modal';
 import { UsuariodetailsComponent } from '../usuariodetails/usuariodetails.component';
-//import { UsuariodetailsComponent } from '../usuariodetails/usuariodetails.component';
+import { KeycloakService } from '../../../auth/login.service';
+
 import {
   MdbModalModule,
   MdbModalRef,
@@ -22,6 +22,8 @@ import {
 export class UsuariolistComponent {
   lista: Usuario[] = [];
   usuarioService = inject(UsuariosService);
+  loginService = inject(KeycloakService);
+
   usuarioEdit: Usuario = new Usuario({
     id: 0,
     nome: '',
@@ -58,6 +60,8 @@ export class UsuariolistComponent {
   }
 
   deleteById(usuario: Usuario) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     // 1. Apresenta o SweetAlert para confirmação
     Swal.fire({
       title: `Confirma a exclusão do usuário ${usuario.nome}?`, // Corrigido para "usuário"
@@ -95,6 +99,8 @@ export class UsuariolistComponent {
   }
 
   new() {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.usuarioEdit = new Usuario({
       id: 0,
       nome: '',
@@ -108,6 +114,8 @@ export class UsuariolistComponent {
     });
   }
   editById(usuario: Usuario) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.usuarioEdit = Object.assign({}, usuario); //clonando pra evitar referencia de objeto
     this.modalRef = this.modalService.open(this.modalUsuariosDetalhe, {
       modalClass: 'modal-lg modal-dialog-centered'

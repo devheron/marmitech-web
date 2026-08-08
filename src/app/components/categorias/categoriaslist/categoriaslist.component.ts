@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CategoriasdetailsComponent } from '../categoriasdetails/categoriasdetails.component';
 import { CategoriaService } from '../../../services/categoria.service';
+import { KeycloakService } from '../../../auth/login.service';
 import {
   MdbModalModule,
   MdbModalRef,
@@ -21,6 +22,7 @@ import {
 export class CategoriaslistComponent {
   lista: Categoria[] = [];
   categoriaService = inject(CategoriaService);
+  loginService = inject(KeycloakService);
 
   categoriaEdit: Categoria = new Categoria({
     id: 0,
@@ -56,6 +58,8 @@ export class CategoriaslistComponent {
 
   // 🔴 Deletar categoria
   deleteById(categoria: Categoria) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     if (!categoria.id) {
       Swal.fire({
         title: 'Categoria sem ID',
@@ -105,6 +109,8 @@ export class CategoriaslistComponent {
 
   // 🆕 Nova categoria
   new() {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.categoriaEdit = new Categoria({
       id: 0,
       nome: '',
@@ -117,6 +123,8 @@ export class CategoriaslistComponent {
 
   // ✏️ Editar categoria
   editById(categoria: Categoria) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.categoriaEdit = Object.assign({}, categoria); // Clona o objeto para evitar referência
     this.modalRef = this.modalService.open(this.modalCategoriaDetalhe, {
       modalClass: 'modal-lg modal-dialog-centered'
