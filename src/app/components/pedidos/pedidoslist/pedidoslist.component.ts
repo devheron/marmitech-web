@@ -15,6 +15,8 @@ import { ProdutoService } from '../../../services/produto.service';
 import { ClienteService } from '../../../services/cliente.service';
 import { CategoriaService } from '../../../services/categoria.service';
 
+import { KeycloakService } from '../../../auth/login.service';
+
 @Component({
   selector: 'app-pedidoslist',
   imports: [CommonModule, FormsModule, MdbModalModule],
@@ -29,6 +31,7 @@ export class PedidoslistComponent implements OnInit {
   private categoriaService = inject(CategoriaService);
   private modalService = inject(MdbModalService);
   private router = inject(Router);
+  public loginService = inject(KeycloakService);
 
 
   vistaAtual: 'categorias' | 'produtos' = 'categorias';

@@ -4,6 +4,7 @@ import { PedidoService } from '../../../services/pedido.service';
 import { StatusPedidoEnum } from '../../../models/status-pedido.enum';
 import Swal from 'sweetalert2';
 import { interval, Subscription } from 'rxjs';
+import { KeycloakService } from '../../../auth/login.service';
 
 
 interface PedidoItemResponseDTO {
@@ -40,6 +41,7 @@ export class PedidosFilaComponent implements OnInit, OnDestroy {
   pedidos: PedidoResponseDTO[] = [];
   statusPedido = StatusPedidoEnum;
   private pedidoService = inject(PedidoService);
+  loginService = inject(KeycloakService);
   private refreshSubscription!: Subscription;
 
   ngOnInit(): void {
@@ -86,6 +88,29 @@ export class PedidosFilaComponent implements OnInit, OnDestroy {
   }
 
   atualizarStatus(pedido: PedidoResponseDTO, novoStatus: string): void {
+    // 1. Apenas ADMIN e FUNCIONARIO podem alterar o status
+    if (!this.loginService.hasRole('ADMIN') && !this.loginService.hasRole('FUNCIONARIO')) {
+      Swal.fire('Acesso Restrito', 'Apenas Funcionários e Administradores podem alterar o status do pedido.', 'warning');
+      return;
+    }
+
+    // Se for o mesmo status, ignora
+    if (pedido.status === novoStatus) {
+      return;
+    }
+
+    // 2. Regra: Uma vez que atualiza para PREPARANDO (ou além), não pode voltar para FILA
+    if (novoStatus === 'FILA' && (pedido.status === 'PREPARANDO' || pedido.status === 'FINALIZADO' || pedido.status === 'ENTREGUE')) {
+      Swal.fire('Ação Não Permitida', 'Um pedido em preparação não pode retornar para a Fila.', 'warning');
+      return;
+    }
+
+    // Regra: Não pode regressar de FINALIZADO para PREPARANDO
+    if (pedido.status === 'FINALIZADO' && novoStatus === 'PREPARANDO') {
+      Swal.fire('Ação Não Permitida', 'Um pedido já finalizado não pode retornar para a etapa de preparação.', 'warning');
+      return;
+    }
+
     // Garante que o novoStatus é valido
     const statusValido = Object.values(this.statusPedido).includes(novoStatus as StatusPedidoEnum);
 
@@ -95,10 +120,9 @@ export class PedidosFilaComponent implements OnInit, OnDestroy {
     }
 
     // Cria um objeto Pedido para enviar na atualização
-    // O backend irá receber isto e o PedidoService irá atualizar o status
     const pedidoParaAtualizar: any = {
-      ...pedido, // Envia o pedido todo
-      status: novoStatus // garante que o status novo está definido
+      ...pedido,
+      status: novoStatus
     };
 
     this.pedidoService.update(pedidoParaAtualizar).subscribe(

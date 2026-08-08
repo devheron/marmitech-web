@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ClientedetailsComponent } from '../clientedetails/clientedetails.component';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { KeycloakService } from '../../../auth/login.service';
 
 @Component({
   selector: 'app-clientelist',
@@ -19,6 +20,7 @@ import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit
 export class ClientelistComponent {
   lista: Cliente[] = [];
   clienteService = inject(ClienteService);
+  loginService = inject(KeycloakService);
 
   clienteEdit: Cliente = new Cliente({
     clienteId: 0,
@@ -59,6 +61,8 @@ export class ClientelistComponent {
   }
 
   deleteById(cliente: Cliente) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     Swal.fire({
       title: 'Você tem certeza?',
       icon: 'warning',
@@ -94,6 +98,8 @@ export class ClientelistComponent {
   }
 
   new() {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.clienteEdit = new Cliente({
       id: 0,
       nome: '',
@@ -109,6 +115,8 @@ export class ClientelistComponent {
   }
 
   editById(cliente: Cliente) {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.clienteEdit = Object.assign({}, cliente);
     this.modalRef = this.modalService.open(this.modalClienteDetalhe, {
       modalClass: 'modal-lg modal-dialog-centered'

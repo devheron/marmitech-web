@@ -4,6 +4,7 @@ import { PedidoItemService } from '../../../services/pedido-item.service';
 import { PedidosItemdetailsComponent } from '../pedidos-itemdetails/pedidos-itemdetails.component';
 import {MdbModalModule, MdbModalRef, MdbModalService} from 'mdb-angular-ui-kit/modal';
 import Swal from 'sweetalert2';
+import { KeycloakService } from '../../../auth/login.service';
 
 
 @Component({
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
 export class PedidosItemlistComponent {
 
   pedidoItemService = inject(PedidoItemService);
+  loginService = inject(KeycloakService);
 
   pedidoItems: PedidoItem[] = [];
 
@@ -53,6 +55,8 @@ export class PedidosItemlistComponent {
   }
   
   new() {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.pedidoItemEdit = new PedidoItem(
       { id: 0, 
         pedidoId: 0,
@@ -72,11 +76,15 @@ export class PedidosItemlistComponent {
   
 
   editById(item: PedidoItem): void {
+    if (!this.loginService.validarPermissaoEscrita()) return;
+
     this.pedidoItemEdit = Object.assign({}, item);
     this.modalRef = this.modalService.open(this.modalProdutoDetalhe);
   };
   
   deleteById(pedidoItem: PedidoItem): void {
+        if (!this.loginService.validarPermissaoEscrita()) return;
+
         Swal.fire({
           title: 'Confirma a exclusão do produto ' + pedidoItem.id + '?',
           icon: 'warning',
