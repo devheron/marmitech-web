@@ -1,8 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import Swal from 'sweetalert2';
+
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDDmPTEPTROvbNlOTFxkEdiQYY5Gqmvxcg",
+  authDomain: "marmitech-504321.firebaseapp.com",
+  projectId: "marmitech-504321",
+  storageBucket: "marmitech-504321.firebasestorage.app",
+  messagingSenderId: "771382585695",
+  appId: "1:771382585695:web:a25d7de63f3dc5d4dcaeea"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +26,37 @@ import Swal from 'sweetalert2';
 export class KeycloakService {
   private http = inject(HttpClient);
 
-  fazerLogin(email: string, senha: String): Observable<any> {
-    // Tenta autenticação no backend ou aceita caso o usuário exista
-    return this.http.post(`${environment.apiUrl}/api/usuario/login`, { email, senha }).pipe();
+  fazerLogin(email: string, senha: string): Observable<any> {
+    // Tenta autenticacao no backend (banco de dados interno)
+    return this.http.post<any>(`${environment.apiUrl}/api/usuario/login`, { email, senha }).pipe(
+      catchError(() => {
+        // Se o usuario nao existir no banco de dados interno, tenta autenticar via Firebase Auth (usuarios externos)
+        return from(signInWithEmailAndPassword(auth, email, senha)).pipe(
+          switchMap((userCredential) =>
+            from(userCredential.user.getIdTokenResult(true)).pipe(
+              switchMap((idTokenResult) => {
+                const claims = idTokenResult.claims || {};
+                const cargoExtraido = (claims['cargo'] || claims['role']) as string;
+                return of({
+                  token: idTokenResult.token,
+                  cargo: cargoExtraido,
+                  nome: userCredential.user.displayName || userCredential.user.email || 'Usuário Firebase',
+                  email: userCredential.user.email,
+                  isFirebase: true
+                });
+              })
+            )
+          )
+        );
+      })
+    );
   }
 
   getToken(): string | undefined {
     return localStorage.getItem('token') || undefined;
   }
 
-  login(): void {}
+  login(): void { }
 
   getUsername(): string | undefined {
     return localStorage.getItem('user') || 'usuario_local';

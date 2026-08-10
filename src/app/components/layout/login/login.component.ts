@@ -31,8 +31,10 @@ export class LoginComponent {
       next: (res) => {
         localStorage.setItem('user', this.loginData.email);
         localStorage.setItem('token', res.token);
-        localStorage.setItem('cargo', res.cargo);
-        localStorage.setItem('nome', res.nome);
+        if (res.cargo) {
+          localStorage.setItem('cargo', res.cargo);
+        }
+        localStorage.setItem('nome', res.nome || this.loginData.email);
 
         Swal.fire({
           title: 'Bem-vindo!',
@@ -42,8 +44,8 @@ export class LoginComponent {
           showConfirmButton: false
         });
 
-        const cargo = (res.cargo || '').toUpperCase();
-        const destino = cargo === 'CLIENTE' ? '/meus-pedidos' : '/admin/pedidos/fila';
+        const cargo = (res.cargo).toUpperCase();
+        const destino = (cargo === 'ADMIN' || cargo === 'FUNCIONARIO') ? '/admin/pedidos/fila' : '/meus-pedidos';
         this.router.navigate([destino]);
       },
       error: (err) => {
