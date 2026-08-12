@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  # 'Gatilhos' automaticos
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+  # 'Gatilho' manual -> pode ser executado via botao no GitHub Actions
+  workflow_dispatch:
+
+
+
+jobs:
+  build:
+    name: Build e Validacao
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo do repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar projeto
+        run: npx ng build --configuration production
+
+      - name: Salvar artefato de compilacao
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-marmitech-web
+          path: dist/marmitech-web/browser
+
+
+  deploy:
+    name: Deploy no Firebase Hosting
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo do repositorio
+        uses: actions/checkout@v4
+
+      - name: Baixar artefato de compilacao
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-marmitech-web
+          path: dist/marmitech-web/browser
+
+      - name: Deploy no Firebase Hosting
+        run: npx firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
