@@ -6,6 +6,8 @@ on:
     branches:
       - develop
       - main
+      - feature/pipeline-cicd
+
   pull_request:
     branches:
       - develop
@@ -47,7 +49,7 @@ jobs:
   deploy:
     name: Deploy no Firebase Hosting
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/pipeline-cicd')
     runs-on: ubuntu-latest
 
     steps:
@@ -61,4 +63,4 @@ jobs:
           path: dist/marmitech-web/browser
 
       - name: Deploy no Firebase Hosting
-        run: npx firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+        run: npx -p firebase-tools firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
